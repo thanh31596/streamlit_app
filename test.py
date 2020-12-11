@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import plotly.figure_factory as ff
 import os
 import joblib
 import streamlit.components.v1 as components
