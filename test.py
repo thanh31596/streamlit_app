@@ -18,7 +18,7 @@ from pandas.errors import ParserError
 import time
 import altair as altpi
 import matplotlib.cm as cm
-import graphviz
+
 import base64
 from bokeh.io import output_file, show
 from bokeh.layouts import column
