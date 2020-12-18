@@ -32,6 +32,7 @@ from bokeh.palettes import Set3
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+
 import time
 
 
@@ -84,14 +85,14 @@ class Predictor:
     def set_classifier_properties(self):
         self.type = st.sidebar.selectbox("Algorithm type", ("Classification", "Regression", "Clustering"))
         if self.type == "Regression":
-            self.chosen_classifier = st.sidebar.selectbox("Please choose a classifier", ('Random Forest', 'Linear Regression', 'Neural Network')) 
+            self.chosen_classifier = st.sidebar.selectbox("Please choose a classifier", ('Random Forest', 'Linear Regression')) 
             if self.chosen_classifier == 'Random Forest': 
                 self.n_trees = st.sidebar.slider('number of trees', 1, 1000, 1)
             elif self.chosen_classifier == 'Neural Network':
                 self.epochs = st.sidebar.slider('number of epochs', 1 ,100 ,10)
                 self.learning_rate = float(st.sidebar.text_input('learning rate:', '0.001'))
         elif self.type == "Classification":
-            self.chosen_classifier = st.sidebar.selectbox("Please choose a classifier", ('Logistic Regression', 'Naive Bayes', 'Neural Network')) 
+            self.chosen_classifier = st.sidebar.selectbox("Please choose a classifier", ('Logistic Regression', 'Naive Bayes')) 
             if self.chosen_classifier == 'Logistic Regression': 
                 self.max_iter = st.sidebar.slider('max iterations', 1, 100, 10)
             elif self.chosen_classifier == 'Neural Network':
@@ -122,18 +123,7 @@ class Predictor:
                 self.predictions_train = self.alg.predict(self.X_train)
                 self.predictions = predictions
 
-            elif self.chosen_classifier=='Neural Network':
-                model = Sequential()
-                model.add(Dense(500, input_dim = len(self.X_train.columns), activation='relu',))
-                model.add(Dense(50, activation='relu'))
-                model.add(Dense(50, activation='relu'))
-                model.add(Dense(1))
-
-                # optimizer = keras.optimizers.SGD(lr=self.learning_rate, decay=1e-6, momentum=0.9, nesterov=True)
-                model.compile(loss= "mean_squared_error" , optimizer='adam', metrics=["mean_squared_error"])
-                self.model = model.fit(self.X_train, self.y_train, epochs=self.epochs, batch_size=40)
-                self.predictions = model.predict(self.X_test)
-                self.predictions_train = model.predict(self.X_train)
+            
 
         elif self.type == "Classification":
             if self.chosen_classifier == 'Logistic Regression':
@@ -150,19 +140,7 @@ class Predictor:
                 self.predictions_train = self.alg.predict(self.X_train)
                 self.predictions = predictions
 
-            elif self.chosen_classifier=='Neural Network':
-                model = Sequential()
-                model.add(Dense(500, input_dim = len(self.X_train.columns), activation='relu'))
-                model.add(Dense(50, activation='relu'))
-                model.add(Dense(50, activation='relu'))
-                model.add(Dense(self.number_of_classes, activation='softmax'))
-
-                optimizer = tf.keras.optimizers.SGD(lr=self.learning_rate, decay=1e-6, momentum=0.9, nesterov=True)
-                model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-                self.model = model.fit(self.X_train, self.y_train, epochs=self.epochs, batch_size=40)
-
-                self.predictions = model.predict_classes(self.X_test)
-                self.predictions_train = model.predict_classes(self.X_train)
+            
 
            
 
