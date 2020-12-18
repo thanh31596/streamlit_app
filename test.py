@@ -29,10 +29,6 @@ from bokeh.models import Panel, Tabs
 from bokeh.palettes import Set3
 
 # Keras specific
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-
 import time
 
 
